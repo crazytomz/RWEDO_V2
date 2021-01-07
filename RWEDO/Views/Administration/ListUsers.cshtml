@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "Manage Users";
+}
+@if (Model.Any())
+{
+    int index = 0;
+    foreach (var user in Model)
+    {
+        index = index + 1;
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Registered Users</h4>
+                                <p class="card-category">Manage users to accomadate into the application</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <tr>
+                                                <th>
+                                                    Status
+                                                </th>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Username
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    Edit
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="td-actions">
+                                                    @if (user.IsActive)
+                                                    {
+                                                        <a asp-action="deactivateuser" asp-controller="Administration" asp-route-id="@user.Id" class="btn btn-primary">Deactivate</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-action="activateuser" asp-controller="Administration" asp-route-id="@user.Id" class="btn btn-danger">Activate</a>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @index
+                                                </td>
+                                                <td>
+                                                    @user.UserName
+                                                </td>
+                                                <td>
+                                                    @user.Email
+                                                </td>
+                                                <td>
+                                                    <a asp-action="EditUser" asp-controller="Administration" asp-route-id="@user.Id">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">Registered Users</h4>
+                            <p class="card-category">Manage users to accomadate into the application</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>
+                                                #
+                                            </th>
+                                            <th>
+                                                Username
+                                            </th>
+                                            <th>
+                                                Email
+                                            </th>
+                                            <th>
+                                                Edit
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                              No data available
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

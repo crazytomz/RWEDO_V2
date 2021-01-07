@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">person_pin</i>
+                </div>
+                <p class="card-category">Registered Users</p>
+                <h3 class="card-title">
+                    @ViewBag.TotalActiveUsers/@ViewBag.TotalUsers
+                    <small>Active</small>
+                </h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">build</i>
+                    <a asp-action="listusers" asp-controller="administration" class="nav-link">Manage users</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">emoji_flags</i>
+                </div>
+                <p class="card-category">User Roles</p>
+                <h3 class="card-title">Total @ViewBag.TotalRoles</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">build</i>
+                    <a asp-action="listroles" asp-controller="administration" class="nav-link">Manage user roles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">info_outline</i>
+                </div>
+                <p class="card-category">Privilages</p>
+                <h3 class="card-title">Total 3</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">build</i>
+                    <a href="javascript:;">Manage privillages</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

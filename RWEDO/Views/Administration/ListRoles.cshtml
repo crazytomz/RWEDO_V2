@@ -1,0 +1,147 @@
+﻿@model IEnumerable<IdentityRole>
+
+@using Microsoft.AspNetCore.Authorization
+
+@inject IAuthorizationService authorizationService
+
+@{
+    ViewBag.Title = "User Roles";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="card-title ">Roles</h4>
+                                <p class="card-category">Create or edit roles fro the application</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="btn btn-secondary" style="width:auto"
+                                   asp-controller="administration" asp-action="CreateRole">
+                                    Create Role
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            Edit
+                                        </th>
+                                        <th>
+                                            Delete
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Any())
+                                    {
+                                        int index = 0;
+                                        foreach (var role in Model)
+                                        {
+                                            index = index + 1;
+                                            <tr>
+                                                <td>
+                                                    @index
+                                                </td>
+                                                <td>
+                                                    @role.Name
+                                                </td>
+                                                <td>
+                                                    <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
+
+                                                        @*@if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                                                            {
+                                                                <a class="btn btn-primary" asp-action="EditRole"
+                                                                   asp-controller="Administration" asp-route-id="@role.Id">
+                                                                    Edit
+                                                                </a>
+                                                            }*@
+                                                        <span id="confirmDeleteSpan_@role.Id" style="display:none">
+                                                            <span>Are you sure you want to delete?</span>
+                                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                                            <a href="#" class="btn btn-primary"
+                                                               onclick="confirmDelete('@role.Id', false)">No</a>
+                                                        </span>
+
+                                                        <span id="deleteSpan_@role.Id">
+                                                            <a href="#" onclick="confirmDelete('@role.Id', true)"><i class="material-icons">delete</i></a>
+                                                        </span>
+                                                    </form>
+                                                    @*<a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id">
+                                                            <i class="material-icons">delete</i>
+                                                        </a>*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="4" class="text-center">
+                                                No data available
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/CustomScript.js"></script>
+}
+@*<div class="card mb-3">
+        <div class="card-header">
+            Role Id : @role.Id
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@role.Name</h5>
+        </div>
+        <div class="card-footer">
+            <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
+
+                @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
+                {
+                    <a class="btn btn-primary" asp-action="EditRole"
+                       asp-controller="Administration" asp-route-id="@role.Id">
+                        Edit
+                    </a>
+                }
+                <span id="confirmDeleteSpan_@role.Id" style="display:none">
+                    <span>Are you sure you want to delete?</span>
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                    <a href="#" class="btn btn-primary"
+                       onclick="confirmDelete('@role.Id', false)">No</a>
+                </span>
+
+                <span id="deleteSpan_@role.Id">
+                    <a href="#" class="btn btn-danger"
+                       onclick="confirmDelete('@role.Id', true)">Delete</a>
+                </span>
+            </form>
+        </div>
+    </div>*@
