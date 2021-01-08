@@ -65,24 +65,36 @@
     <div class="wrapper ">
         <div class="sidebar" data-color="purple" data-background-color="white" data-image="~/images/sidebar-1.jpg">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+                <a href="javascript:void(0)" class="simple-text logo-normal">
                     RWEDO
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="./dashboard.html">
+                        <a class="nav-link" asp-action="index" asp-controller="administrator">
                             <i class="material-icons">admin_panel_settings</i>
                             <p>Admin Dashboard</p>
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="./user.html">
+                        <a class="nav-link" asp-action="index" asp-controller="dashboard">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
                         </a>
-                    </li>              
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-action="edituser" asp-controller="account">
+                            <i class="material-icons">description</i>
+                            <p>Survey File</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-action="edituser" asp-controller="account">
+                            <i class="material-icons">face</i>
+                            <p>User Profile</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -115,7 +127,7 @@
                                     <i class="material-icons">person</i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                                    <a class="dropdown-item" href="#">Profile</a>
+                                    <a class="dropdown-item" asp-controller="account" asp-action="changepassword">Change Password</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" asp-action="logout" asp-controller="account">Log out</a>
                                 </div>
