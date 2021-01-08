@@ -30,6 +30,12 @@ namespace RWEDO.Controllers
             return View();
         }
         [HttpGet]
+        [AllowAnonymous]
+        public IActionResult NotVerified()
+        {
+            return View();
+        }
+        [HttpGet]
         public async Task<IActionResult> AddPassword()
         {
             var user = await userManager.GetUserAsync(User);
@@ -309,7 +315,15 @@ namespace RWEDO.Controllers
                 {
                    return RedirectToAction("index", "administration");
                 }
-                if (result.IsLockedOut)
+                else if(result.Succeeded && user.IsActive)
+                {
+                    return RedirectToAction("index", "dashboard");
+                }
+                else if (result.Succeeded && !user.IsActive)
+                {
+                    return RedirectToAction("notverified", "account");
+                }
+                    if (result.IsLockedOut)
                 {
                     return View("AccountLocked");
                 }

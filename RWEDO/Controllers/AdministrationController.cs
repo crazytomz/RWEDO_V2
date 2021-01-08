@@ -434,7 +434,6 @@ namespace RWEDO.Controllers
                 Roles = userRoles,
                 Surveyors = surveyors.Select(s=> new KeyValuePair<int, string>(s.ID,s.Name)).ToList(),
             };
-            //c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false"
             return View(model);
         }
 

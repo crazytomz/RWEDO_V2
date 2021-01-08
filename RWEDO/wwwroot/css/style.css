@@ -41,7 +41,7 @@ body {
     border-radius: 3px;
 }
 .face .content {
-  color: #666;
+    color: #666;
 }
 .face .content h2 {
   font-size: 1.2em;
@@ -199,7 +199,9 @@ body {
   color: #42509e;
   cursor: pointer;
 }
-
+.not_verified {
+    width: 650px!important;
+}
 small {
   font-size: 0.7em;
 }
