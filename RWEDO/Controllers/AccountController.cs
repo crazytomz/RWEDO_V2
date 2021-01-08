@@ -236,7 +236,7 @@ namespace RWEDO.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName,
+                    UserName = model.UserName.ToLower(),
                     Email = model.Email,
                 };
 

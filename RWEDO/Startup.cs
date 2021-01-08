@@ -44,7 +44,7 @@ namespace RWEDO
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("SuperAdminPolicy",
-                  policy => policy.RequireUserName("SAdmin"));
+                  policy => policy.RequireUserName("sadmin"));
 
                 options.AddPolicy("CanReadPolicy",
                   policy => policy.RequireClaim("Read"));

@@ -1,6 +1,15 @@
-﻿<h3 class="text-danger">
-    Your account is locked, please try again after sometime or you may
-    <a asp-action="ForgotPassword" asp-controller="Account">
-        reset your password by clicking here
-    </a>
-</h3>
+﻿@{
+    ViewData["Title"] = "Not yet verified";
+    Layout = "_AccountLayout";
+}
+<div class="face face-front not_verified">
+    <div class="content">
+        <h2 style="color:darkslategrey"> Your account is locked ! </h2>
+        <h3 class="text-danger">
+            Your account is locked, please try again after sometime or you may
+            <a asp-action="ForgotPassword" asp-controller="Account">
+                reset your password by clicking here
+            </a>
+        </h3>
+    </div>
+</div>
