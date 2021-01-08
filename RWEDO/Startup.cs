@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RWEDO.DataTransferObject;
-using RWEDO.Security;
 using StructureMap;
 
 namespace RWEDO
@@ -41,17 +40,6 @@ namespace RWEDO
             .AddEntityFrameworkStores<RWEDODbContext>()
             .AddDefaultTokenProviders();
             services.AddMvc();
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("DeleteRolePolicy",
-                    policy => policy.RequireClaim("Delete Role"));
-
-                options.AddPolicy("EditRolePolicy",
-                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
-
-                options.AddPolicy("AdminRolePolicy",
-                    policy => policy.RequireRole("Admin"));
-            });
             var container = new Container(scope =>
             {
                 scope.Scan(x =>
@@ -62,7 +50,6 @@ namespace RWEDO
                 });
             });
             container.Populate(services);
-            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             return container.GetInstance<IServiceProvider>();
         }
 
