@@ -42,8 +42,19 @@ namespace RWEDO
             services.AddMvc();
             // Configure your policies
             services.AddAuthorization(options =>
-                  options.AddPolicy("SuperAdminPolicy",
-                  policy => policy.RequireUserName("SAdmin")));
+            {
+                options.AddPolicy("SuperAdminPolicy",
+                  policy => policy.RequireUserName("SAdmin"));
+
+                options.AddPolicy("CanReadPolicy",
+                  policy => policy.RequireClaim("Read"));
+
+                options.AddPolicy("CanWritePolicy",
+                  policy => policy.RequireUserName("Write"));
+
+                options.AddPolicy("CanDeletePolicy",
+                  policy => policy.RequireUserName("Delete"));
+            });
             var container = new Container(scope =>
             {
                 scope.Scan(x =>
