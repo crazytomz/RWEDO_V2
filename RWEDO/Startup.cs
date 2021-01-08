@@ -40,6 +40,10 @@ namespace RWEDO
             .AddEntityFrameworkStores<RWEDODbContext>()
             .AddDefaultTokenProviders();
             services.AddMvc();
+            // Configure your policies
+            services.AddAuthorization(options =>
+                  options.AddPolicy("SuperAdminPolicy",
+                  policy => policy.RequireUserName("SAdmin")));
             var container = new Container(scope =>
             {
                 scope.Scan(x =>

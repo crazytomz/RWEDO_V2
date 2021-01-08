@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace RWEDO.Controllers
 {
-    //[Authorize(Policy = "AdminRolePolicy")]
+    [Authorize(Policy = "SuperAdminPolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -238,7 +238,6 @@ namespace RWEDO.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -277,7 +276,6 @@ namespace RWEDO.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -338,7 +336,6 @@ namespace RWEDO.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
