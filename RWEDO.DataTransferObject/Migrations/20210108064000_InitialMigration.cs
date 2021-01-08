@@ -23,33 +23,6 @@ namespace RWEDO.DataTransferObject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    IsAdmin = table.Column<bool>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Status",
                 columns: table => new
                 {
@@ -70,8 +43,8 @@ namespace RWEDO.DataTransferObject.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     IdentityNumber = table.Column<string>(maxLength: 100, nullable: false),
-                    Email = table.Column<string>(maxLength: 500, nullable: false),
-                    PhoneNumber = table.Column<int>(nullable: false),
+                    Email = table.Column<string>(maxLength: 500, nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
                     Address = table.Column<string>(maxLength: 500, nullable: true),
                     PhotoPath = table.Column<string>(maxLength: 500, nullable: true),
                     Qualification = table.Column<string>(maxLength: 250, nullable: true),
@@ -100,6 +73,78 @@ namespace RWEDO.DataTransferObject.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    SurveyorID = table.Column<int>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Surveyors_SurveyorID",
+                        column: x => x.SurveyorID,
+                        principalTable: "Surveyors",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurveyFiles",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SurveyorID = table.Column<int>(nullable: false),
+                    Index = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(maxLength: 20, nullable: false),
+                    InsurerID = table.Column<int>(nullable: false),
+                    RepairerName = table.Column<string>(maxLength: 250, nullable: true),
+                    RepairerEmail = table.Column<string>(maxLength: 200, nullable: true),
+                    Insured = table.Column<string>(maxLength: 100, nullable: false),
+                    EstimateDate = table.Column<string>(maxLength: 20, nullable: true),
+                    BillDate = table.Column<string>(maxLength: 20, nullable: true),
+                    FollowUpDate = table.Column<DateTime>(nullable: false),
+                    HasFile = table.Column<bool>(nullable: false),
+                    HasEstimate = table.Column<bool>(nullable: false),
+                    HasBill = table.Column<bool>(nullable: false),
+                    StatusID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyFiles", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_SurveyFiles_Status_StatusID",
+                        column: x => x.StatusID,
+                        principalTable: "Status",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SurveyFiles_Surveyors_SurveyorID",
+                        column: x => x.SurveyorID,
+                        principalTable: "Surveyors",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -188,44 +233,6 @@ namespace RWEDO.DataTransferObject.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SurveyFiles",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SurveyorID = table.Column<int>(nullable: false),
-                    Index = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(maxLength: 20, nullable: false),
-                    InsurerID = table.Column<int>(nullable: false),
-                    RepairerName = table.Column<string>(maxLength: 250, nullable: true),
-                    RepairerEmail = table.Column<string>(maxLength: 200, nullable: true),
-                    Insured = table.Column<string>(maxLength: 100, nullable: false),
-                    EstimateDate = table.Column<string>(maxLength: 20, nullable: true),
-                    BillDate = table.Column<string>(maxLength: 20, nullable: true),
-                    FollowUpDate = table.Column<DateTime>(nullable: false),
-                    HasFile = table.Column<bool>(nullable: false),
-                    HasEstimate = table.Column<bool>(nullable: false),
-                    HasBill = table.Column<bool>(nullable: false),
-                    StatusID = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SurveyFiles", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_SurveyFiles_Status_StatusID",
-                        column: x => x.StatusID,
-                        principalTable: "Status",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SurveyFiles_Surveyors_SurveyorID",
-                        column: x => x.SurveyorID,
-                        principalTable: "Surveyors",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "Status",
                 columns: new[] { "ID", "Description" },
@@ -240,11 +247,6 @@ namespace RWEDO.DataTransferObject.Migrations
                     { 7, "Report Prepared" },
                     { 8, "Report Submitted" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Surveyors",
-                columns: new[] { "ID", "Address", "Email", "ISDeactivated", "IdentityNumber", "Name", "PhoneNumber", "PhotoPath", "Qualification" },
-                values: new object[] { 1, null, "thomsonkvarkey@outlook.com", false, "Master", "SAdmin", 0, null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -284,6 +286,11 @@ namespace RWEDO.DataTransferObject.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_SurveyorID",
+                table: "AspNetUsers",
+                column: "SurveyorID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyFiles_StatusID",

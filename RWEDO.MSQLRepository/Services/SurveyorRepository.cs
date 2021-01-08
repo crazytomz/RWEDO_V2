@@ -13,6 +13,16 @@ namespace RWEDO.MSQLRepository.Services
         {
             this.context = context;
         }
+        public IEnumerable<Surveyor> GetAllSurveyor()
+        {
+            return context.Surveyors;
+        }
+        public Surveyor Add(Surveyor surveyor)
+        {
+            context.Surveyors.Add(surveyor);
+            context.SaveChanges();
+            return surveyor;
+        }
         public Surveyor GetSurveyor(int ID)
         {
             return context.Surveyors.Find(ID);

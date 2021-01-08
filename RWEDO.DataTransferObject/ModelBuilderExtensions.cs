@@ -9,16 +9,6 @@ namespace RWEDO.DataTransferObject
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Surveyor>().HasData(
-                    new Surveyor
-                    {
-                        ID = 1,
-                        Name = "SAdmin",
-                        IdentityNumber = "Master",
-                        Email = "thomsonkvarkey@outlook.com",
-                        ISDeactivated = false
-                    }
-                );            
             modelBuilder.Entity<Status>().HasData(
                     new Status
                     {

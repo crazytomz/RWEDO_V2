@@ -192,11 +192,11 @@ namespace RWEDO.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
+            return RedirectToAction("login", "account");
         }
 
         [HttpGet]
@@ -238,22 +238,18 @@ namespace RWEDO.Controllers
 
                 if (result.Succeeded)
                 {
-                    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("account", "login");
-                    }
-
-                    ViewBag.ErrorTitle = "Registration successful";
                     ViewBag.ErrorMessage = "";
-                    return View("Error");
+                    ViewBag.ErrorTitle = "Registration successful";
+                    return RedirectToAction("login", "account");                    
                 }
-
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }                
             }
-
             return View(model);
         }
 

@@ -63,6 +63,27 @@
         </div>
     </div>
     <div class="form-group row">
+        <label asp-for="SurveyorID" class="col-sm-2 col-form-label"></label>
+        <input type="hidden" asp-for="SurveyorID" />
+        <div class="col-sm-8">
+            <select class="form-control surveyor_drop" id="ddlSurveyor" style="width:100%;">
+                <option value="">select a surveyor</option>
+                @foreach (var data in Model.Surveyors)
+                {
+                    if (data.Key == Model.SurveyorID)
+                    {
+                        <option selected value="@data.Key">@data.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@data.Key">@data.Value</option>
+                    }
+
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
         <label asp-for="Email" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
             <input asp-for="Email" class="form-control">
@@ -86,3 +107,12 @@
         </div>
     </div>
 </form>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".surveyor_drop").change(function () {
+                $('#SurveyorID').val($('#ddlSurveyor').val());
+            });
+        });
+    </script>
+    }

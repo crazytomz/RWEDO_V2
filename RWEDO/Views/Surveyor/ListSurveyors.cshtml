@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Surveyor>
+@{
+ViewBag.Title = "Surveyors";
+}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-primary">                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="card-title ">Surveyors</h4>
+                                <p class="card-category">Manage surveyors to accomadate into the application</p>
+                            </div>                            
+                            <div class="col-md-6 text-right">
+                                <a class="btn btn-secondary" style="width:auto"
+                                   asp-controller="surveyor" asp-action="CreateSurveyor">
+                                    Create Surveyor
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Identity Number
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Edit
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model.Any())
+                                {
+                                    int index = 0;
+                                    foreach (var surveyor in Model)
+                                    {
+                                        index = index + 1;
+                                    <tr>
+                                        <td>
+                                            @index
+                                        </td>
+                                        <td>
+                                            @surveyor.Name
+                                        </td>
+                                        <td>
+                                            @surveyor.IdentityNumber
+                                        </td>
+                                        <td class="td-actions">
+                                            @if (surveyor.ISDeactivated)
+                                            {
+                                                <a asp-action="activateuser" asp-controller="Administration" asp-route-id="@surveyor.ID" class="btn btn-danger">Activate</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="deactivateuser" asp-controller="Administration" asp-route-id="@surveyor.ID" class="btn btn-primary">Deactivate</a>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-action="EditSurveyor" asp-controller="Surveyor" asp-route-id="@surveyor.ID">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            No data available
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

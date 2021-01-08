@@ -10,7 +10,7 @@ using RWEDO.DataTransferObject;
 namespace RWEDO.DataTransferObject.Migrations
 {
     [DbContext(typeof(RWEDODbContext))]
-    [Migration("20210105070840_InitialMigration")]
+    [Migration("20210108064000_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,6 +168,8 @@ namespace RWEDO.DataTransferObject.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int?>("SurveyorID");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -182,6 +184,8 @@ namespace RWEDO.DataTransferObject.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("SurveyorID");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -272,7 +276,6 @@ namespace RWEDO.DataTransferObject.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(500);
 
                     b.Property<bool>("ISDeactivated");
@@ -285,7 +288,7 @@ namespace RWEDO.DataTransferObject.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<int>("PhoneNumber");
+                    b.Property<string>("PhoneNumber");
 
                     b.Property<string>("PhotoPath")
                         .HasMaxLength(500);
@@ -296,10 +299,6 @@ namespace RWEDO.DataTransferObject.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Surveyors");
-
-                    b.HasData(
-                        new { ID = 1, Email = "thomsonkvarkey@outlook.com", ISDeactivated = false, IdentityNumber = "Master", Name = "SAdmin", PhoneNumber = 0 }
-                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -344,6 +343,14 @@ namespace RWEDO.DataTransferObject.Migrations
                     b.HasOne("RWEDO.DataTransferObject.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("RWEDO.DataTransferObject.ApplicationUser", b =>
+                {
+                    b.HasOne("RWEDO.DataTransferObject.Surveyor", "Surveyor")
+                        .WithMany()
+                        .HasForeignKey("SurveyorID")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

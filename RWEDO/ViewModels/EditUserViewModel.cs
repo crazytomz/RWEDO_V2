@@ -12,21 +12,19 @@ namespace RWEDO.ViewModels
         {
             Claims = new List<string>();
             Roles = new List<string>();
+            Surveyors = new List<KeyValuePair<int, string>>();
         }
 
         public string Id { get; set; }
-
+        [Display(Name ="Link Surveyor")]
+        public int? SurveyorID { get; set; }
         [Required]
         public string UserName { get; set; }
-
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
-
-        public string City { get; set; }
-
+        public string Email { get; set; }        
         public List<string> Claims { get; set; }
-
         public IList<string> Roles { get; set; }
+        public List<KeyValuePair<int, string>> Surveyors { get; set; }
     }
 }

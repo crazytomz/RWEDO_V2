@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RWEDO.DataTransferObject;
+using RWEDO.MSQLRepository.Contracts;
 using RWEDO.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +17,25 @@ namespace RWEDO.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ISurveyorRepository _surveyorRepository;
         public AdministrationController(RoleManager<IdentityRole> roleManager,
-                                        UserManager<ApplicationUser> userManager)
+                                        UserManager<ApplicationUser> userManager,
+                                        ISurveyorRepository surveyorRepository)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            _surveyorRepository = surveyorRepository;
         }
         public ActionResult Index()
         {
             int usersCount = userManager.Users.Where(x => x.UserName.ToLower() != "sadmin").Count();
             int activeUsersCount = userManager.Users.Where(x => x.UserName.ToLower() != "sadmin" && x.IsActive).Count();
             int roleCount = roleManager.Roles.Count();
+            int surveyorCount = _surveyorRepository.GetAllSurveyor().Count();
             ViewBag.TotalUsers = usersCount;
             ViewBag.TotalActiveUsers = activeUsersCount;
             ViewBag.TotalRoles = roleCount;
+            ViewBag.TotalSurveyors = surveyorCount;
             return View();
         }     
 
@@ -417,16 +423,18 @@ namespace RWEDO.Controllers
 
             var userClaims = await userManager.GetClaimsAsync(user);
             var userRoles = await userManager.GetRolesAsync(user);
-
+            var surveyors = _surveyorRepository.GetAllSurveyor();
             var model = new EditUserViewModel
             {
                 Id = user.Id,
                 Email = user.Email,
                 UserName = user.UserName,
+                SurveyorID = user.SurveyorID,
                 Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
-                Roles = userRoles
+                Roles = userRoles,
+                Surveyors = surveyors.Select(s=> new KeyValuePair<int, string>(s.ID,s.Name)).ToList(),
             };
-
+            //c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false"
             return View(model);
         }
 
@@ -444,7 +452,7 @@ namespace RWEDO.Controllers
             {
                 user.Email = model.Email;
                 user.UserName = model.UserName;
-
+                user.SurveyorID = model.SurveyorID;
                 var result = await userManager.UpdateAsync(user);
 
                 if (result.Succeeded)
