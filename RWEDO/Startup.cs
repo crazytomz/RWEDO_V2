@@ -59,13 +59,13 @@ namespace RWEDO
                   policy => policy.RequireUserName("sadmin"));
 
                 options.AddPolicy("CanReadPolicy",
-                  policy => policy.RequireClaim("Read"));
+                  policy => policy.RequireClaim("Read", "true"));
 
                 options.AddPolicy("CanWritePolicy",
-                  policy => policy.RequireClaim("Write"));
+                  policy => policy.RequireClaim("Write", "true"));
 
                 options.AddPolicy("CanDeletePolicy",
-                  policy => policy.RequireClaim("Delete"));
+                  policy => policy.RequireClaim("Delete","true"));
             });
             var container = new Container(scope =>
             {
