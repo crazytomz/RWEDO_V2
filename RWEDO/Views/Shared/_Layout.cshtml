@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
         <link href="~/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
         <link href="~/demo/demo.css" rel="stylesheet" />
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!--   Core JS Files   -->
         <script src="~/js/core/jquery.min.js"></script>
         <script src="~/js/core/popper.min.js"></script>
@@ -56,6 +56,7 @@
         <script src="~/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
         <!-- Material Dashboard DEMO methods, don't include it in your project! -->
         <script src="~/demo/demo.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </environment>
     <environment exclude="Development">
     </environment>
@@ -135,7 +136,7 @@
                         @if (@ViewBag.Activelink == "userprofile")
                         {
                             <li class="nav-item active">
-                                <a class="nav-link" asp-action="index" asp-controller="account">
+                                <a class="nav-link" asp-action="index" asp-controller="userprofile">
                                     <i class="material-icons">face</i>
                                     <p>User Profile</p>
                                 </a>
@@ -144,7 +145,7 @@
                         else
                         {
                             <li class="nav-item ">
-                                <a class="nav-link" asp-action="index" asp-controller="account">
+                                <a class="nav-link" asp-action="index" asp-controller="userprofile">
                                     <i class="material-icons">face</i>
                                     <p>User Profile</p>
                                 </a>

@@ -129,7 +129,8 @@ namespace RWEDO.DataTransferObject.Migrations
                     HasFile = table.Column<bool>(nullable: false),
                     HasEstimate = table.Column<bool>(nullable: false),
                     HasBill = table.Column<bool>(nullable: false),
-                    StatusID = table.Column<int>(nullable: true)
+                    StatusID = table.Column<int>(nullable: true),
+                    VechicleNo = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

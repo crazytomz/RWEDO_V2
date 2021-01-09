@@ -1,0 +1,142 @@
+﻿@model SurveyFileViewModel
+@{
+    ViewBag.Title = "Create Survey File";
+    ViewBag.Activelink = "surveyfile";
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Create new file</h4>
+                <p class="card-category">Add new survey file</p>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Date" class="bmd-label-floating"></label>
+                                <input asp-for="Date" class="form-control datepicker" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="Insured" class="bmd-label-floating"></label>
+                                <input asp-for="Insured" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="VechicleNo" class="bmd-label-floating"></label>
+                                <input asp-for="VechicleNo" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="InsurerID" class="bmd-label-floating"></label>
+                                <input asp-for="InsurerID" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="RepairerName" class="bmd-label-floating"></label>
+                                <input asp-for="RepairerName" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="RepairerEmail" class="bmd-label-floating"></label>
+                                <input asp-for="RepairerEmail" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group" style="margin-top: 12px;">
+                                <input type="hidden" asp-for="HasFile" />
+                                <input asp-for="HasFile" />
+                                <label class="form-check-label" asp-for="HasFile"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="FollowUpDate" class="bmd-label-floating">Insurer</label>
+                                @*<input asp-for="FollowUpDate" class="form-control datepicker">*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group" style="margin-top: 12px;">
+                                <input type="hidden" asp-for="HasEstimate" />
+                                <input asp-for="HasEstimate" />
+                                <label class="form-check-label" asp-for="HasEstimate"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="EstimateDate" class="bmd-label-floating"></label>
+                                <input asp-for="EstimateDate" class="form-control datepicker" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group" style="margin-top: 12px;">
+                                <input type="hidden" asp-for="HasBill" />
+                                <input asp-for="HasBill" />
+                                <label class="form-check-label" asp-for="HasBill"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="BillDate" class="bmd-label-floating"></label>
+                                <input asp-for="BillDate" class="form-control datepicker" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FollowUpDate" class="bmd-label-floating"></label>
+                                <input asp-for="FollowUpDate" class="form-control datepicker" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" asp-for="Index" />
+                                <label asp-for="BillDate" class="bmd-label-floating">Status</label>
+                                @*<input asp-for="BillDate" class="form-control datepicker">*@
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Back to list</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-profile">
+            <div class="card-body">
+                <h6 class="card-category text-gray">File Index</h6>                
+                <h4 class="card-title">@Model.Index</h4>
+                <p class="card-description">
+                    This is an auto generated number internally stamped in the survey file
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+}

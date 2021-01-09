@@ -41,5 +41,6 @@ namespace RWEDO.DataTransferObject
         [ForeignKey("Status")]
         public int? StatusID { get; set; }
         public Status Status { get; set; }
+        public string VechicleNo { get; set; }
     }
 }

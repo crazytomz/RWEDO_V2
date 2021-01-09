@@ -255,6 +255,8 @@ namespace RWEDO.DataTransferObject.Migrations
 
                     b.Property<int>("SurveyorID");
 
+                    b.Property<string>("VechicleNo");
+
                     b.HasKey("ID");
 
                     b.HasIndex("StatusID");

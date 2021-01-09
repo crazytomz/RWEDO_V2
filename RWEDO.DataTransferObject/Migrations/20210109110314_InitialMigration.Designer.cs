@@ -10,7 +10,7 @@ using RWEDO.DataTransferObject;
 namespace RWEDO.DataTransferObject.Migrations
 {
     [DbContext(typeof(RWEDODbContext))]
-    [Migration("20210108064000_InitialMigration")]
+    [Migration("20210109110314_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -256,6 +256,8 @@ namespace RWEDO.DataTransferObject.Migrations
                     b.Property<int?>("StatusID");
 
                     b.Property<int>("SurveyorID");
+
+                    b.Property<string>("VechicleNo");
 
                     b.HasKey("ID");
 
