@@ -17,23 +17,9 @@ namespace RWEDO.Controllers
         {
             _surveyFileRepository = surveyFileRepository;
         }
-        public ActionResult Index()
+        public ActionResult ListSurveyFiles()
         {
-            var model = new List<SurveyFileViewModel>();
-            foreach (var surveyFile in _surveyFileRepository.GetAllSurveyFile())
-            {
-                var surveyFileViewModel = new SurveyFileViewModel
-                {
-                    ID = surveyFile.ID,
-                    Index = surveyFile.Index,
-                    Date = surveyFile.Date.ToString("dd-MMM-yyyy"),
-                    InsurerID = surveyFile.InsurerID,
-                    RepairerName = surveyFile.RepairerName,
-                    RepairerEmail = surveyFile.RepairerEmail,
-                };
-
-                model.Add(surveyFileViewModel);
-            }                          
+            var model =_surveyFileRepository.GetAllSurveyFile();                              
             return View(model);
         }
     }

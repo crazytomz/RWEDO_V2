@@ -16,6 +16,10 @@ namespace RWEDO.Controllers
         {
             _surveyorRepository = surveyorRepository;
         }
+        public IActionResult Index()
+        {
+            return View();
+        }
         public IActionResult ListSurveyors()
         {
             var surveyors = _surveyorRepository.GetAllSurveyor();

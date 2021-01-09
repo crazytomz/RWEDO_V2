@@ -71,30 +71,78 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-action="index" asp-controller="administration">
-                            <i class="material-icons">admin_panel_settings</i>
-                            <p>Admin Dashboard</p>
-                        </a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" asp-action="index" asp-controller="dashboard">
-                            <i class="material-icons">dashboard</i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" asp-action="index" asp-controller="surveyfile">
-                            <i class="material-icons">description</i>
-                            <p>Survey File</p>
-                        </a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" asp-action="index" asp-controller="account">
-                            <i class="material-icons">face</i>
-                            <p>User Profile</p>
-                        </a>
-                    </li>
+                    @if (@ViewBag.Activelink == "admindashboard")
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-action="index" asp-controller="administration">
+                                <i class="material-icons">admin_panel_settings</i>
+                                <p>Admin Dashboard</p>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="index" asp-controller="administration">
+                                <i class="material-icons">admin_panel_settings</i>
+                                <p>Admin Dashboard</p>
+                            </a>
+                        </li>
+                    }
+                    @if (@ViewBag.Activelink == "dashboard")
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-action="index" asp-controller="surveyor">
+                                <i class="material-icons">dashboard</i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="index" asp-controller="surveyor">
+                                <i class="material-icons">dashboard</i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                    }
+                    @if (@ViewBag.Activelink == "surveyfile")
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-action="ListSurveyFiles" asp-controller="surveyfile">
+                                <i class="material-icons">description</i>
+                                <p>Survey File</p>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-action="ListSurveyFiles" asp-controller="surveyfile">
+                                <i class="material-icons">description</i>
+                                <p>Survey File</p>
+                            </a>
+                        </li>
+                    }
+                    @if (@ViewBag.Activelink == "userprofile")
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-action="index" asp-controller="account">
+                                <i class="material-icons">face</i>
+                                <p>User Profile</p>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-action="index" asp-controller="account">
+                                <i class="material-icons">face</i>
+                                <p>User Profile</p>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -103,15 +151,18 @@
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        @if (User.Identity.Name.ToLower() == "sadmin")
+                        @if (User.Identity.Name.ToLower() == "sadmin" && ViewBag.Activelink == "admindashboard")
                         {
                             <a asp-controller="administration" asp-action="index">Admin Dashboard</a>
                         }
-                        else
+                        else if(ViewBag.Activelink == "dashboard")
                         {
                             <a asp-controller="administration" asp-action="index">Dashboard</a>
                         }
-                        <a class="navbar-brand" href="javascript:;">\ @ViewBag.Title</a>
+                        @if (ViewBag.Title != "Admin Dashboard" && ViewBag.Title != "Dashboard")
+                        {
+                            <a class="navbar-brand" href="javascript:;">/ @ViewBag.Title</a>
+                        } 
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle navigation</span>
