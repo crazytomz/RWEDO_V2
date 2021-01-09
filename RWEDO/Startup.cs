@@ -62,10 +62,10 @@ namespace RWEDO
                   policy => policy.RequireClaim("Read"));
 
                 options.AddPolicy("CanWritePolicy",
-                  policy => policy.RequireUserName("Write"));
+                  policy => policy.RequireClaim("Write"));
 
                 options.AddPolicy("CanDeletePolicy",
-                  policy => policy.RequireUserName("Delete"));
+                  policy => policy.RequireClaim("Delete"));
             });
             var container = new Container(scope =>
             {

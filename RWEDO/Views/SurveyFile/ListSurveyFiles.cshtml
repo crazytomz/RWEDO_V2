@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<SurveyFile>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService authorizationService
 @{
     ViewBag.Title = "List survey file";
     ViewBag.Activelink = "surveyfile";
@@ -15,81 +17,84 @@
                                 <p class="card-category">Create or edit files</p>
                             </div>
                             <div class="col-md-6 text-right">
-                                <a class="btn btn-secondary" style="width:auto"
-                                   asp-controller="surveyfile" asp-action="createsurveyfile">
-                                    Create File
-                                </a>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead class=" text-primary">
-                                        <tr>
-                                            <th>
-                                                File Index
-                                            </th>
-                                            <th>
-                                                Date
-                                            </th>
-                                            <th>
-                                                Status
-                                            </th>
-                                            <th>
-                                                Insured
-                                            </th>
-                                            <th>
-                                                Vehicle No
-                                            </th>
-                                            <th>
-                                                Edit
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @if (Model.Any())
-                                        {
-                                            foreach (var surveyfile in Model)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @surveyfile.Index
-                                                    </td>
-                                                    <td>
-                                                        @surveyfile.Date.ToString("dd-MMM-yyyy")
-                                                    </td>
-                                                    <td>
-                                                        @*@surveyfile.Status.Description*@
-                                                    </td>
-                                                    <td>
-                                                        @surveyfile.Insured
-                                                    </td>
-                                                    <td>
-                                                        @surveyfile.VechicleNo
-                                                    </td>
-                                                    <td>
-                                                        <a asp-action="Editsurveyfile" asp-controller="surveyfile" asp-route-id="@surveyfile.ID">
-                                                            <i class="material-icons">edit</i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                <td colspan="6" class="text-center">
-                                                    No data available
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                @if ((await authorizationService.AuthorizeAsync(User, "CanWritePolicy")).Succeeded)
+                                {
+                                    <a class="btn btn-secondary" style="width:auto"
+                                       asp-controller="surveyfile" asp-action="createsurveyfile">
+                                        Create File
+                                    </a>
+                                }
                             </div>
                         </div>
                     </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <tr>
+                                        <th>
+                                            File Index
+                                        </th>
+                                        <th>
+                                            Date
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Insured
+                                        </th>
+                                        <th>
+                                            Vehicle No
+                                        </th>
+                                        <th>
+                                            Edit
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model.Any())
+                                    {
+                                        foreach (var surveyfile in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @surveyfile.Index
+                                                </td>
+                                                <td>
+                                                    @surveyfile.Date.ToString("dd-MMM-yyyy")
+                                                </td>
+                                                <td>
+                                                    @*@surveyfile.Status.Description*@
+                                                </td>
+                                                <td>
+                                                    @surveyfile.Insured
+                                                </td>
+                                                <td>
+                                                    @surveyfile.VechicleNo
+                                                </td>
+                                                <td>
+                                                    <a asp-action="Editsurveyfile" asp-controller="surveyfile" asp-route-id="@surveyfile.ID">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                No data available
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

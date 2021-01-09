@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService authorizationService
 @{
-    ViewBag.Title = "Create Survey File";
+    ViewBag.Title = "Edit Survey File";
     ViewBag.Activelink = "surveyfile";
     Layout = "_Layout";
 }
@@ -10,14 +10,15 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header card-header-primary">
-                <h4 class="card-title">Create new file</h4>
-                <p class="card-category">Add new survey file</p>
+                <h4 class="card-title">Edit file</h4>
+                <p class="card-category">Update changes in survey file</p>
             </div>
             <div class="card-body">
                 <form method="post" asp-action="savesurveyfile" asp-controller="surveyfile">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
+                                <input type="hidden" asp-for="ID" />
                                 <label asp-for="Date" class="bmd-label-floating"></label>
                                 <input asp-for="Date" class="form-control datepicker" autocomplete="off">
                             </div>
@@ -140,8 +141,24 @@
                     {
                         <button type="submit" class="btn btn-primary pull-right">Save Changes</button>
                     }
+                    @if ((await authorizationService.AuthorizeAsync(User, "CanDeletePolicy")).Succeeded)
+                    {
+                        <a asp-action="DeleteSurveyFile" asp-controller="surveyfile" asp-route-ID="@Model.ID" class="btn btn-danger pull-right">Delete</a>
+                    }
                     <a asp-action="listsurveyfiles" class="btn btn-outline-primary pull-right">Back to list</a>
                     <div class="clearfix"></div>
+                    @if (ViewBag.ActionStatus == "success")
+                    {
+                        <div class="alert alert-success" role="alert">
+                            Success, changes successfully saved!
+                        </div>
+                    }
+                    else if (ViewBag.ActionStatus == "fail")
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Error, Opration failed with error!
+                        </div>
+                    }
                 </form>
             </div>
         </div>
@@ -170,6 +187,7 @@
             $(".status_drop").change(function () {
                 $('#StatusID').val($('#ddlStatus').val());
             });
+            $(".alert").delay(7000).fadeOut(500);
         });
     </script>
 }
