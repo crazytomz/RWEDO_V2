@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RWEDO.DataTransferObject;
 using RWEDO.MSQLRepository.Contracts;
@@ -9,6 +10,7 @@ using RWEDO.ViewModels;
 
 namespace RWEDO.Controllers
 {
+    [Authorize]
     public class SurveyorController : Controller
     {
         private readonly ISurveyorRepository _surveyorRepository;

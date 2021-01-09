@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1300
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RWEDO", "RWEDO\RWEDO.csproj", "{2D4025F3-FDFD-41A4-9FDC-930D9D1BD3B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWEDO", "RWEDO\RWEDO.csproj", "{2D4025F3-FDFD-41A4-9FDC-930D9D1BD3B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RWEDO.DataTransferObject", "RWEDO.DataTransferObject\RWEDO.DataTransferObject.csproj", "{1D7BB03F-395A-4512-85BB-89557F32C7CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWEDO.DataTransferObject", "RWEDO.DataTransferObject\RWEDO.DataTransferObject.csproj", "{1D7BB03F-395A-4512-85BB-89557F32C7CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RWEDO.MSQLRepository", "RWEDO.MSQLRepository\RWEDO.MSQLRepository.csproj", "{D33DBF99-0B63-4F5D-A65C-20FEE1A49326}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RWEDO.MSQLRepository", "RWEDO.MSQLRepository\RWEDO.MSQLRepository.csproj", "{D33DBF99-0B63-4F5D-A65C-20FEE1A49326}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D7BB03F-395A-4512-85BB-89557F32C7CB} = {1D7BB03F-395A-4512-85BB-89557F32C7CB}
 	EndProjectSection
