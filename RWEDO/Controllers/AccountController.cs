@@ -319,7 +319,7 @@ namespace RWEDO.Controllers
                 }
                 else if(result.Succeeded && user.IsActive)
                 {
-                    return RedirectToAction("index", "dashboard");
+                    return RedirectToAction("index", "surveyor");
                 }
                 else if (result.Succeeded && !user.IsActive)
                 {
