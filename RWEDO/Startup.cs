@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RWEDO.DataTransferObject;
+using RWEDO.Services;
 using StructureMap;
 
 namespace RWEDO
@@ -40,6 +42,15 @@ namespace RWEDO
             .AddEntityFrameworkStores<RWEDODbContext>()
             .AddDefaultTokenProviders();
             services.AddMvc();
+            services.AddTransient<IEmailSender, EmailSender>(i =>
+                new EmailSender(
+                    _config["EmailSender:Host"],
+                    _config.GetValue<int>("EmailSender:Port"),
+                    _config.GetValue<bool>("EmailSender:EnableSSL"),
+                    _config["EmailSender:UserName"],
+                    _config["EmailSender:Password"]
+                )
+            );
             // Configure your policies
             services.AddAuthorization(options =>
             {

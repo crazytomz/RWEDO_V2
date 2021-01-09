@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using RWEDO.DataTransferObject;
 using RWEDO.ViewModels;
@@ -14,14 +15,15 @@ namespace RWEDO.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _sender;
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager, IEmailSender sender)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _sender = sender;
         }
         [HttpGet]
         [AllowAnonymous]
@@ -38,9 +40,9 @@ namespace RWEDO.Controllers
         [HttpGet]
         public async Task<IActionResult> AddPassword()
         {
-            var user = await userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
-            var userHasPassword = await userManager.HasPasswordAsync(user);
+            var userHasPassword = await _userManager.HasPasswordAsync(user);
 
             if (userHasPassword)
             {
@@ -55,9 +57,9 @@ namespace RWEDO.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.GetUserAsync(User);
+                var user = await _userManager.GetUserAsync(User);
 
-                var result = await userManager.AddPasswordAsync(user, model.NewPassword);
+                var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
 
                 if (!result.Succeeded)
                 {
@@ -68,7 +70,7 @@ namespace RWEDO.Controllers
                     return View();
                 }
 
-                await signInManager.RefreshSignInAsync(user);
+                await _signInManager.RefreshSignInAsync(user);
 
                 return View("AddPasswordConfirmation");
             }
@@ -79,9 +81,9 @@ namespace RWEDO.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
         {
-            var user = await userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
-            var userHasPassword = await userManager.HasPasswordAsync(user);
+            var userHasPassword = await _userManager.HasPasswordAsync(user);
 
             if (!userHasPassword)
             {
@@ -96,13 +98,13 @@ namespace RWEDO.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.GetUserAsync(User);
+                var user = await _userManager.GetUserAsync(User);
                 if (user == null)
                 {
                     return RedirectToAction("Login");
                 }
 
-                var result = await userManager.ChangePasswordAsync(user,
+                var result = await _userManager.ChangePasswordAsync(user,
                     model.CurrentPassword, model.NewPassword);
 
                 if (!result.Succeeded)
@@ -114,7 +116,7 @@ namespace RWEDO.Controllers
                     return View();
                 }
 
-                await signInManager.RefreshSignInAsync(user);
+                await _signInManager.RefreshSignInAsync(user);
                 return View("ChangePasswordConfirmation");
             }
 
@@ -138,16 +140,16 @@ namespace RWEDO.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user != null)
                 {
-                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
                     {
-                        if (await userManager.IsLockedOutAsync(user))
+                        if (await _userManager.IsLockedOutAsync(user))
                         {
-                            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
                         }
 
                         return View("ResetPasswordConfirmation");
@@ -179,16 +181,16 @@ namespace RWEDO.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
-                if (user != null && await userManager.IsEmailConfirmedAsync(user))
+                if (user != null)
                 {
-                    var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
                             new { email = model.Email, token = token }, Request.Scheme);
 
-
+                    await _sender.SendEmailAsync(model.Email, "RWEDO: Reset password", "<html><b>Hi User,</b><br /> Access the below link to reset your password<br />"+ passwordResetLink + "</html>");
                     return View("ForgotPasswordConfirmation");
                 }
 
@@ -201,7 +203,7 @@ namespace RWEDO.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("login", "account");
         }
 
@@ -216,7 +218,7 @@ namespace RWEDO.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> IsEmailInUse(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
@@ -240,7 +242,7 @@ namespace RWEDO.Controllers
                     Email = model.Email,
                 };
 
-                var result = await userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
@@ -268,7 +270,7 @@ namespace RWEDO.Controllers
                 return RedirectToAction("index", "home");
             }
 
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -276,7 +278,7 @@ namespace RWEDO.Controllers
                 return View("NotFound");
             }
 
-            var result = await userManager.ConfirmEmailAsync(user, token);
+            var result = await _userManager.ConfirmEmailAsync(user, token);
 
             if (result.Succeeded)
             {
@@ -306,9 +308,9 @@ namespace RWEDO.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByNameAsync(model.UserName);
+                var user = await _userManager.FindByNameAsync(model.UserName);
 
-                var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password,
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password,
                 model.RememberMe, true);
 
                 if (result.Succeeded && model.UserName.ToLower()=="sadmin")
@@ -341,7 +343,7 @@ namespace RWEDO.Controllers
                                     new { ReturnUrl = returnUrl });
 
             var properties =
-                signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+                _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
             return new ChallengeResult(provider, properties);
         }
@@ -365,7 +367,7 @@ namespace RWEDO.Controllers
                 return View("Login", loginViewModel);
             }
 
-            var info = await signInManager.GetExternalLoginInfoAsync();
+            var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ModelState.AddModelError(string.Empty,
@@ -379,7 +381,7 @@ namespace RWEDO.Controllers
 
             if (email != null)
             {
-                user = await userManager.FindByEmailAsync(email);
+                user = await _userManager.FindByEmailAsync(email);
 
                 if (user != null && !user.EmailConfirmed)
                 {
@@ -388,7 +390,7 @@ namespace RWEDO.Controllers
                 }
             }
 
-            var signInResult = await signInManager.ExternalLoginSignInAsync(
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(
                                         info.LoginProvider, info.ProviderKey,
                                         isPersistent: false, bypassTwoFactor: true);
 
@@ -408,9 +410,9 @@ namespace RWEDO.Controllers
                             Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                         };
 
-                        await userManager.CreateAsync(user);
+                        await _userManager.CreateAsync(user);
 
-                        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                         var confirmationLink = Url.Action("ConfirmEmail", "Account",
                                         new { userId = user.Id, token = token }, Request.Scheme);
@@ -422,8 +424,8 @@ namespace RWEDO.Controllers
                         return View("Error");
                     }
 
-                    await userManager.AddLoginAsync(user, info);
-                    await signInManager.SignInAsync(user, isPersistent: false);
+                    await _userManager.AddLoginAsync(user, info);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return LocalRedirect(returnUrl);
                 }
